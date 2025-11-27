@@ -4,5 +4,6 @@
   "less.lint.unknownAtRules": "ignore",
   "tailwindCSS.includeLanguages": {
     "plaintext": "html"
-  }
+  },
+  "prisma.pinToPrisma6": true
 }
