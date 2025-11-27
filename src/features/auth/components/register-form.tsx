@@ -19,6 +19,7 @@ import {
 import { authclient } from "@/lib/auth-client";
 // import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
@@ -59,20 +60,22 @@ export function RegisterForm() {
     // Example: await fetch('/api/signup', { method: 'POST', body: JSON.stringify(values) })
     // router.push('/welcome') // redirect after success
 
-    await authclient.signUp.email({
-      name: values.email,
-      email: values.email,
-      password: values.password,
-      callbackURL: "/",
-    },
-  {
-    onSuccess:()=>{
-      router.push("/");
-    },
-    onError:(ctx)=>{
-      toast.error(ctx.error.message);
-    }
-  });
+    await authclient.signUp.email(
+      {
+        name: values.email,
+        email: values.email,
+        password: values.password,
+        callbackURL: "/",
+      },
+      {
+        onSuccess: () => {
+          router.push("/");
+        },
+        onError: (ctx) => {
+          toast.error(ctx.error.message);
+        },
+      }
+    );
   };
 
   const isPending = form.formState.isSubmitting;
@@ -97,6 +100,12 @@ export function RegisterForm() {
                     type="button"
                     disabled={isPending}
                   >
+                    <Image
+                      src="/github.svg"
+                      alt="github image"
+                      width={20}
+                      height={20}
+                    />
                     Continue with Github
                   </Button>
                   <Button
@@ -105,6 +114,12 @@ export function RegisterForm() {
                     type="button"
                     disabled={isPending}
                   >
+                    <Image
+                      src="/google.svg"
+                      alt="google image"
+                      width={20}
+                      height={20}
+                    />
                     Continue with Google
                   </Button>
                 </div>

@@ -19,6 +19,7 @@ import {
 import { authclient } from "@/lib/auth-client";
 // import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
@@ -44,18 +45,21 @@ export function LoginForm() {
   });
 
   const onSubmit = async (values: LoginFormValues) => {
-    await authclient.signIn.email({
-      email:values.email,
-      password:values.password,
-      callbackURL:"/",
-    },{
-      onSuccess:()=>{
-        router.push("/");
+    await authclient.signIn.email(
+      {
+        email: values.email,
+        password: values.password,
+        callbackURL: "/",
       },
-      onError:(ctx)=>{
-        toast.error(ctx.error.message)
+      {
+        onSuccess: () => {
+          router.push("/");
+        },
+        onError: (ctx) => {
+          toast.error(ctx.error.message);
+        },
       }
-    })
+    );
   };
 
   const isPending = form.formState.isSubmitting;
@@ -80,6 +84,12 @@ export function LoginForm() {
                     type="button"
                     disabled={isPending}
                   >
+                    <Image
+                      src="/github.svg"
+                      alt="github image"
+                      width={20}
+                      height={20}
+                    />
                     Continue with Github
                   </Button>
                   <Button
@@ -88,6 +98,12 @@ export function LoginForm() {
                     type="button"
                     disabled={isPending}
                   >
+                    <Image
+                      src="/google.svg"
+                      alt="google image"
+                      width={20}
+                      height={20}
+                    />
                     Continue with Google
                   </Button>
                 </div>
