@@ -24,6 +24,7 @@ import {
   SidebarMenuSubItem,
 } from "./ui/sidebar";
 import { authclient } from "@/lib/auth-client";
+import { useHasActiveSubscription } from "@/features/subscriptions/hooks/use-subscription";
 
 const menuItems = [
   {
@@ -39,7 +40,7 @@ const menuItems = [
 const AppSidebar = () => {
   const router = useRouter();
   const pathname = usePathname();
-
+  const { hasActiveSubscription, isLoading } = useHasActiveSubscription();
   return (
     <Sidebar
       collapsible="icon"
@@ -137,25 +138,26 @@ const AppSidebar = () => {
       {/* FOOTER */}
       <SidebarFooter className="px-2 py-3">
         <SidebarMenu className="space-y-2">
-          <SidebarMenuItem>
-            <SidebarMenuButton
-              tooltip="Upgrade to Pro"
-              className={`w-full justify-center sm:justify-start gap-x-3 h-10 px-3 rounded-lg
+          {!hasActiveSubscription && !isLoading && (
+            <SidebarMenuItem>
+              <SidebarMenuButton
+                tooltip="Upgrade to Pro"
+                className={`w-full justify-center sm:justify-start gap-x-3 h-10 px-3 rounded-lg
                           bg-gradient-to-r from-white via-orange-200 to-orange-500
                           text-orange-900 sm:text-black font-semibold shadow-md shadow-orange-300/30
                           transition-transform duration-200 `}
-              onClick={() => {}}
-            >
-              <StarIcon className="h-4 w-4" />
-              <span className="text-sm ml-1">Upgrade to Pro</span>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-
+                onClick={() => authclient.checkout({ slug: "Nexiflow-Pro" })}
+              >
+                <StarIcon className="h-4 w-4" />
+                <span className="text-sm ml-1">Upgrade to Pro</span>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          )}
           <SidebarMenuItem>
             <SidebarMenuButton
               tooltip="Billing Portal"
               className="gap-x-4 h-10 px-3 rounded-md hover:bg-slate-100/60 transition-colors duration-150"
-              onClick={() => {}}
+              onClick={() => authclient.customer.portal()}
             >
               <CreditCardIcon className="h-4 w-4 text-slate-600" />
               <span className="text-sm text-slate-700">Billing Portal</span>
